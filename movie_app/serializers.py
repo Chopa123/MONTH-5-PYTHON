@@ -8,14 +8,16 @@ class DirectorSerializer(serializers.ModelSerializer):
         fields = 'id name'.split()
 
 
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = 'id starts text'.split()
+
+
 class MovieSerializer(serializers.ModelSerializer):
+    director = DirectorSerializer()
+    filtered_reviews = ReviewSerializer(many=True)
 
     class Meta:
         model = Movie
-        fields = 'id title description duration director'.split()
-
-class ReviewSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Review
-        fields = '__all__'
+        fields = 'id filtered_reviews description is_active director tags movie_name'.split()
